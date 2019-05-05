@@ -22,7 +22,7 @@ def init_db():
     db.create_all()
 
     conf = cfg.CONF
-    password = conf.get('super_user_password').encode('utf-8')
+    password = conf.get('super_user_password')
     salt = str(uuid.uuid4())
 
     h_pass = utils.hash_password(password, salt)
