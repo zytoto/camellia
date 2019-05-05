@@ -1,4 +1,4 @@
-#coding:utf8
+# coding:utf8
 from camellia.db.sqlalchemy import db
 from camellia.db.sqlalchemy import User
 
@@ -17,17 +17,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = cfg.CONF.get('database')
 def destroy_db():
     db.drop_all()
 
+
 def init_db():
-    db.create_all() 
+    db.create_all()
 
     conf = cfg.CONF
-    password = conf.get('super_user_password')
+    password = str(conf.get('super_user_password'))
     salt = str(uuid.uuid4())
 
     h_pass = utils.hash_password(password, salt)
     super_user = User(
-        username = 'admin',
-        nickname = u'超级管理员',
+        username='admin',
+        nickname=u'超级管理员',
         email=conf.get('super_user_email'),
         password=h_pass,
         salt=salt,
