@@ -1,0 +1,52 @@
+#!/bin/bash
+
+ui_pid=/var/run/ztviolet-ui/ztviolet-ui.pid
+ws_pid=/var/run/ztviolet-ui/ztviolet-ui-ws.pid
+
+ui_log=/var/log/ztviolet-ui/ztviolet-ui.log
+ws_log=/var/log/ztviolet-ui/ztviolet-ui-ws.log
+
+if [ ! -d /var/run/ztviolet-ui ];
+then
+	mkdir -p /var/run/ztviolet-ui
+fi
+
+if [ ! -d /var/cache/ztviolet/ui ];
+then
+	mkdir -p /var/cache/ztviolet/ui
+fi
+
+if [ ! -d /var/log/ztviolet-ui ];
+then
+	mkdir -p /var/log/ztviolet-ui
+fi
+
+function stop_ztviolet_ui {
+	if [ -f $ui_pid ];
+	then
+		pkill -F $ui_pid
+		rm $ui_pid
+	fi
+	if [ -f $ws_pid ];
+	then
+		pkill -F $ws_pid
+		rm $ws_pid
+	fi
+}
+
+if [[ -n $1 ]];
+then
+	if [ $1 == 'stop' ];
+	then
+		stop_ztviolet_ui
+		exit 0
+	fi
+
+	if [ $1 == 'restart' ];
+	then
+		stop_ztviolet_ui
+	fi
+fi
+
+gunicorn -w 1 ztviolet_ui.server:app -b 0.0.0.0:5001 --timeout 120 --log-level debug --log-file $ui_log -p $ui_pid --daemon
+gunicorn --worker-class eventlet -w 1 ztviolet_ui.wsserver:app -b 0.0.0.0:5005 --log-level debug --log-file $ws_log -p $ws_pid --daemon

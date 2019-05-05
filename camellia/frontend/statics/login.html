@@ -1,0 +1,62 @@
+<!Doctype html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<title>登录 - Camellia</title>
+	</head>
+
+	<script type="text/javascript" src="/js/vue/vue.js"></script>
+	<script type="text/javascript" src="/js/axios/axios.js"></script>
+	<script type="text/javascript" src="/js/socket.io.js"></script>
+
+	<link rel="stylesheet" href="/css/bootstrap.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/skins/eden.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/css/camellia.css" type="text/css" media="screen" />
+	<body>
+		<div id="camellia">
+			<camellia-dialoger ref="dialoger"></camellia-dialoger>
+			<camellia-notifier ref="notifier"></camellia-notifier>
+			<camellia-loader ref="loader"></camellia-loader>
+
+			<div class="container">
+				
+				<div class="bs-docs-section">
+					<div class="row" style="padding-top:180px">
+						<div class="col-lg-3">
+						</div>
+						<div class="col-lg-6">
+							<div class="well bs-component">
+								<form class="form-horizontal">
+									<fieldset>
+										<legend>登录</legend>
+										<div class="form-group">
+											<label for="inputUsername" class="col-lg-2 control-label">用户名</label>
+
+											<div class="col-lg-10">
+												<input class="form-control" id="inputUsername"  ref="inputUsername" v-model="username" placeholder="用户名" type="text">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="inputPassword" class="col-lg-2 control-label">密码</label>
+
+											<div class="col-lg-10">
+												<input class="form-control" id="inputPassword" placeholder="密码" v-model="password" type="password">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-lg-10 col-lg-offset-2" style="text-align:right;">
+												<button type="submit" class="btn btn-primary" @click="login">登录</button>
+											</div>
+										</div>
+									</fieldset>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/js/camellia.js"></script>
+		<script type="text/javascript" src="/js/page-login.js"></script>
+	</body>
+</html>

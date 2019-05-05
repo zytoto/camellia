@@ -1,0 +1,137 @@
+<!Doctype html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<title>用户详情 - Camellia</title>
+	</head>
+
+	<script type="text/javascript" src="/js/vue/vue.js"></script>
+	<script type="text/javascript" src="/js/axios/axios.js"></script>
+	<script type="text/javascript" src="/js/socket.io.js"></script>
+
+	<link rel="stylesheet" href="/css/bootstrap.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/skins/eden.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/css/camellia.css" type="text/css" media="screen" />
+	<body>
+		<div id="camellia">
+			<camellia-header></camellia-header>
+			<camellia-dialoger ref="dialoger"></camellia-dialoger>
+			<camellia-notifier ref="notifier"></camellia-notifier>
+			<camellia-loader ref="loader"></camellia-loader>
+
+			<div class="container" style="margin-top: 50px;">
+				
+				<div class="bs-docs-section">
+					
+					<div class="row profile panel">
+						<div class="col-md-4 bg_blur ">
+						</div>
+						<div class="col-md-8  col-xs-12 info-col">
+							<img src="/images/user-avator.jpeg" class="img-rounded picture hidden-xs">
+							<img src="/images/user-avator.jpeg" class="img-rounded visible-xs picture_mob">
+							<div class="header">
+								<h2>{{ user_info.nickname }}</h2>
+								<h4 v-if="user_info.role!=0">推荐码: {{ user_info.code }}</h4>
+								<span v-if="user_info.role!=0">推广链接: {{invite_prefix}}{{ user_info.code }} &nbsp;&nbsp; </span><span v-if="user_info.role!=0" class="label label-primary">复制</span><br>
+								<a href="/statics/user-list.html"><button v-if="user_info.role==0" class="btn btn-small btn-primary">查看所有用户列表</button></a>
+								<span v-if="user_info.role!=0">{{ user_info.description }}</span>
+							</div>
+
+							<div class="btn-group btn-block">
+								<button class="btn btn-inverse btn-lg" @click="visible='index'"><i class="fa fa-home fa-lg"></i> 个人主页</button>
+								<button class="btn btn-inverse btn-lg" @click="visible='contribute'"><i class="fa fa-heart-o fa-lg"></i> 推广贡献 ({{user_info.contribute}})</button>
+								<button class="btn btn-inverse btn-lg" @click="visible='profile'"><i class="fa fa-cog fa-lg"></i> 用户详情</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- 个人主页 -->
+				<div class="bs-docs-section" v-if="visible=='index'">
+					<div class="row">
+						<div class="col-lg-12">
+							<h3>个人主页</h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<h4>网站制作中........</h4>
+						</div>
+					</div>
+				</div>
+				<!-- 推广贡献 -->
+				<div class="bs-docs-section" v-if="visible=='contribute'">
+					<div class="row">
+						<div class="col-lg-12">
+							<h3>由我推荐的用户</h3>
+						</div>
+					</div>
+
+					<table class="table table-striped table-responsive">
+						<thead>
+							<tr>
+								<th>用户名</th>
+								<th>用户昵称</th>
+								<th>角色</th>
+								<th>性别</th>
+								<th>出生日期</th>
+								<th>电话号码</th>
+								<th>贡献度</th>
+								<th v-if="user_info.role==0||user_info.role==1">
+									<a href="/statics/user-create.html?action=create"><button class="btn btn-primary">创建用户</button></a>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="user in users">
+								<td><a @click="show_user(user.id)">{{ user.username }}</a></td>
+								<td>{{ user.nickname }}</td>
+								<td>
+									<span v-if="user.role==0">超级管理员</span>
+									<span v-if="user.role==1">管理员</span>
+									<span v-if="user.role==2">普通用户</span>
+									<span v-if="user.role==3">超级管理员</span>
+								</td>
+								<td>
+									<span v-if="user.gender==0">其它</span>
+									<span v-if="user.gender==1">男</span>
+									<span v-if="user.gender==2">女</span>
+								</td>
+								<td>{{ user.birthday }}</td>
+								<td>{{ user.phone }}</td>
+								<td style="text-align:center;">{{ user.contribute }}</td>
+								<td v-if="user_info.role==0||user_info.role==1" style="text-align:right;">
+									<span v-if="user.kind==0" class="text-warning">内建用户</span>
+									<span v-if="user.kind==1" class="text-success">受邀用户</span>
+									<span v-if="user.kind==2" class="text-info">创建用户</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<ul class="pagination">
+						<li :class="{disabled:page<=0}"><a @click="get_user_prev_page()">«</a></li>
+						<li v-for="(_p, index) in Array(page_total)" :class="{active:page==index}" class="active"><a @click="get_user_page(index)">{{ index+1 }}</a></li>
+						<li :class="{disabled:page>=page_total-1 }"><a @click="get_user_next_page()">»</a></li>
+					</ul>
+				</div>
+				<!-- 用户详情 -->
+				<div class="bs-docs-section" v-if="visible=='profile'">
+					<div class="row">
+						<div class="col-lg-12">
+							<h3>用户详情</h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<h4>网站制作中........</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/globals.js"></script>
+		<script type="text/javascript" src="/js/camellia.js"></script>
+		<script type="text/javascript" src="/js/page-user-info.js"></script>
+	</body>
+</html>

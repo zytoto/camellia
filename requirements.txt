@@ -1,0 +1,6 @@
+PyYAML
+six
+flask
+flask-sqlalchemy
+gunicorn
+gevent

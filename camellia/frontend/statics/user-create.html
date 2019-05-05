@@ -1,0 +1,116 @@
+<!Doctype html>
+<html>
+        <head>
+                <meta http-equiv="content-type" content="text/html;charset=utf-8">
+                <title>创建用户 - Camellia</title>
+        </head>
+
+        <script type="text/javascript" src="/js/vue/vue.js"></script>
+        <script type="text/javascript" src="/js/axios/axios.js"></script>
+        <script type="text/javascript" src="/js/socket.io.js"></script>
+
+        <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/skins/eden.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/css/camellia.css" type="text/css" media="screen" />
+        <body>
+                <div id="camellia">
+                        <camellia-header v-bind:back-to-login="false"></camellia-header>
+                        <camellia-dialoger ref="dialoger"></camellia-dialoger>
+                        <camellia-notifier ref="notifier"></camellia-notifier>
+                        <camellia-loader ref="loader"></camellia-loader>
+
+
+						<div class="container" style="margin-top:50px;">
+							<div class="bs-docs-section">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="page-header">
+											<h1 v-if="creator.action==null" id="forms" class="text-success">注册新用户</h1>
+											<h1 v-if="creator.action!=null" id="forms" >创建用户</h1>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="well bs-component">
+											<form class="form-horizontal">
+												<fieldset>
+													<legend>基础信息</legend>
+
+													<div class="form-group" v-if="creator.action==null">
+														<label for="inputCode" class="col-lg-2 control-label text-warning">邀请码</label>
+														<div class="col-lg-10">
+															<input class="form-control" id="inputCode" placeholder="邀请码" type="text" v-model="creator.code">
+														</div>
+													</div>
+													<div class="form-group" :class="{'has-error':form_state.username!=0}">
+														<label for="inputUsername" class="col-lg-2 control-label">用户名</label>
+														<div class="col-lg-10">
+															<input class="form-control" id="inputUsername" placeholder="用户名" type="text" v-model="creator.username">
+														</div>
+													</div>
+													<div class="form-group" :class="{'has-error':form_state.email!=0}">
+														<label for="inputEmail" class="col-lg-2 control-label">邮箱地址</label>
+														<div class="col-lg-10">
+															<input class="form-control" id="inputEmail" placeholder="邮箱地址" type="text" v-model="creator.email">
+														</div>
+													</div>
+													<div class="form-group" :class="{'has-error':form_state.pass!=0}">
+														<label for="inputPassword" class="col-lg-2 control-label">密码</label>
+
+														<div class="col-lg-10">
+															<input class="form-control" id="inputPassword" placeholder="密码" type="password" v-model="creator.password">
+														</div>
+													</div>
+													<div class="form-group" :class="{'has-error':form_state.phone!=0}">
+														<label for="inputPhone" class="col-lg-2 control-label">电话号码</label>
+														<div class="col-lg-10">
+															<input class="form-control" id="inputPhone" placeholder="电话号码" type="text" v-model="creator.phone">
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputGender" class="col-lg-2 control-label">性别</label>
+														<div class="col-lg-2">
+															<select class="form-control" id="inputGender" v-model="creator.gender">
+																<option value="1">男</option>
+																<option value="2">女</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group" v-if="my_info.role==0">
+														<label for="inputRole" class="col-lg-2 control-label">角色</label>
+														<div class="col-lg-2">
+															<select class="form-control" id="inputRole" v-model="creator.role">
+																<option value="2">普通用户</option>
+																<option value="1">管理员</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="inputDescription" class="col-lg-2 control-label">自我介绍</label>
+
+														<div class="col-lg-10">
+															<textarea class="form-control" rows="3" id="inputDescription" v-model="creator.description"></textarea>
+															<span class="help-block">请输入一段自我介绍，让大家更好的认识你.</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-lg-12" style="text-align:right;">
+															<button class="btn btn-primary" @click="creat_user">提交</button>
+														</div>
+													</div>
+												</fieldset>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+				
+                <script type="text/javascript" src="/globals.js"></script>
+                <script type="text/javascript" src="/js/camellia.js"></script>
+                <script type="text/javascript" src="/js/page-user-create.js"></script>
+        </body>
+</html>
