@@ -135,10 +135,10 @@ def get_user_list():
             if role != 0:
                 abort(403, msg='您无权进行此操作')
             users = User.query.slice(page*pagesize, pagesize)
-            page_total = (User.query.count()+pagesize)/pagesize
+            page_total = int((User.query.count()+pagesize)/pagesize)
         else:
             users = User.query.filter_by(inviter=inviter).slice(page*pagesize, pagesize)
-            page_total = (User.query.filter_by(inviter=inviter).count()+pagesize)/pagesize
+            page_total = int((User.query.filter_by(inviter=inviter).count()+pagesize)/pagesize)
 
         result = {
             'page_total': page_total,

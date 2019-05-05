@@ -4,3 +4,4 @@ flask
 flask-sqlalchemy
 gunicorn
 gevent
+pymysql
