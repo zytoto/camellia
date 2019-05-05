@@ -1,8 +1,8 @@
-import md5
+import hashlib
 
 
 def hash_password(password, salt):
-    p = md5.new()
+    p = hashlib.md5()
     p.update(password)
     p.update(salt)
 
